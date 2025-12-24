@@ -33,7 +33,6 @@ async function loadTool(tool, element) {
     currentModule = module;
 }
 
-// 初始化選單
 const menu = document.getElementById('menu');
 TOOL_CONFIG.forEach(tool => {
     const btn = document.createElement('button');
