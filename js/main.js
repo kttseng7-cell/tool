@@ -1,8 +1,11 @@
+/**
+ * js/main.js
+ * 核心控制邏輯
+ */
 import { recordCanvas } from './recorder.js';
 
-// --- 註冊區：未來新增工具只需在此加一行 ---
 const TOOL_CONFIG = [
-    { id: 'grid', name: '網格交易 (Grid)', file: 'grid-trading.js' },
+    { id: 'grid-basic', name: '基礎網格交易', file: 'grid-trading.js' },
 ];
 
 let currentModule = null;
@@ -23,9 +26,11 @@ function initMenu() {
 }
 
 async function loadTool(tool, element) {
+    // 移除其他按鈕的啟動狀態
     document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
     element.classList.add('active');
 
+    // 停止當前正在執行的動畫
     if (currentModule && currentModule.destroy) {
         currentModule.destroy();
     }
@@ -34,25 +39,27 @@ async function loadTool(tool, element) {
         const modulePath = `./modules/${tool.file}`;
         const module = await import(modulePath);
 
+        // 更新 UI 資訊
         toolTitle.innerText = module.metadata.title;
         toolInfo.innerText = module.metadata.description;
 
+        // 初始化新工具動畫
         module.init(canvas);
         currentModule = module;
     } catch (err) {
-        console.error("無法載入工具:", err);
+        console.error("載入工具失敗:", err);
     }
 }
 
-exportBtn.addEventListener('click', async () => {
-    if (!currentModule) return alert("請先選擇一個工具！");
+// GIF 錄製按鈕監聽
+exportBtn.onclick = async () => {
+    if (!currentModule) return alert("請先選擇工具！");
     exportBtn.disabled = true;
     exportBtn.innerText = "錄製中 (3s)...";
-    
     await recordCanvas(canvas, 3);
-    
-    exportBtn.innerText = "生成 GIF 動圖";
     exportBtn.disabled = false;
-});
+    exportBtn.innerText = "生成 GIF 動圖";
+};
 
+// 初始啟動
 initMenu();
