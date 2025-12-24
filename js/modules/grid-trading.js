@@ -1,16 +1,23 @@
+/**
+ * 網格交易模組 - 狀態轉換版
+ * 買單(Buy) = 綠色
+ * 賣單(Sell) = 紅色
+ * 觸碰買單變賣單，觸碰賣單變買單
+ */
+
 export const metadata = {
-    title: "網格交易策略 - 動態演示",
-    description: "演示等差網格。紅線為買單，綠線為賣單。當價格刷到線條時會變色閃爍，價格線也會隨漲跌變換顏色。"
+    title: "網格交易策略 - 動態狀態轉換",
+    description: "綠線為買單，紅線為賣單。當價格穿過綠線時執行買入並掛出紅線賣單；穿過紅線時執行賣出並掛回綠線買單。"
 };
 
 let animationId;
 let price = 0;
 let lastPrice = 0;
 let counter = 0;
-let grids = [];
+let gridState = []; // 存儲網格的當前狀態
 
-const COLOR_BUY = '#ff5252';   // 買單紅色
-const COLOR_SELL = '#00c076';  // 賣單綠色
+const COLOR_BUY = '#00c076';  // 買單綠色
+const COLOR_SELL = '#ff5252'; // 賣單紅色
 
 export function init(canvas, config) {
     if (animationId) cancelAnimationFrame(animationId);
@@ -22,18 +29,19 @@ export function init(canvas, config) {
     };
     resize();
 
+    // 初始價格設定在中間
     price = (config.gridTop + config.gridBottom) / 2;
     lastPrice = price;
 
-    // 初始化網格狀態
-    grids = [];
+    // 初始化網格狀態：當前價格以上的為賣單(紅)，以下的為買單(綠)
+    gridState = [];
     const gridGap = (config.gridTop - config.gridBottom) / config.gridCount;
     for (let i = 0; i <= config.gridCount; i++) {
         const level = config.gridBottom + i * gridGap;
-        grids.push({
+        gridState.push({
             price: level,
-            type: level > (config.gridTop + config.gridBottom) / 2 ? 'sell' : 'buy',
-            activeTimer: 0 // 用於控制碰撞後的閃爍動畫
+            type: level > price ? 'sell' : 'buy', // 初始邏輯
+            hitTimer: 0 // 碰撞特效計時
         });
     }
 
@@ -46,34 +54,43 @@ export function init(canvas, config) {
         ctx.fillStyle = '#131722';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 更新價格與漲跌判定
+        // 更新價格
         lastPrice = price;
         counter += 0.02;
-        price += Math.sin(counter) * (100 * config.volatility) + (Math.random() - 0.5) * 50;
+        price += Math.sin(counter) * (120 * config.volatility) + (Math.random() - 0.5) * 80;
+        
+        // 漲跌判定 (用於價格線變色)
         const isRising = price >= lastPrice;
 
-        // 繪製網格
-        grids.forEach(grid => {
+        // 繪製與更新網格
+        gridState.forEach(grid => {
             const y = priceToY(grid.price);
-            const isBuy = grid.type === 'buy';
-            const baseColor = isBuy ? COLOR_BUY : COLOR_SELL;
+            
+            // 碰撞判定：價格是否穿越網格線
+            const crossedUp = lastPrice < grid.price && price >= grid.price;
+            const crossedDown = lastPrice > grid.price && price <= grid.price;
 
-            // 碰撞偵測 (刷到線條)
-            if (Math.abs(price - grid.price) < (60 * config.volatility)) {
-                grid.activeTimer = 15; // 亮起持續 15 幀
+            if (crossedUp || crossedDown) {
+                grid.hitTimer = 20; // 亮起特效
+                // 狀態切換邏輯
+                if (grid.type === 'buy') {
+                    grid.type = 'sell'; // 買單被碰到變賣單
+                } else {
+                    grid.type = 'buy';  // 賣單被碰到變買單
+                }
             }
 
+            // 繪製格線
             ctx.beginPath();
-            if (grid.activeTimer > 0) {
-                // 刷到後的變色與加粗效果
+            if (grid.hitTimer > 0) {
                 ctx.setLineDash([]);
                 ctx.lineWidth = 3;
-                ctx.strokeStyle = '#ffffff'; // 刷到時閃爍白色或強色
-                grid.activeTimer--;
+                ctx.strokeStyle = '#ffffff'; // 碰撞時閃爍白色
+                grid.hitTimer--;
             } else {
                 ctx.setLineDash([5, 5]);
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = baseColor + '66'; // 預設帶透明度
+                ctx.strokeStyle = (grid.type === 'buy' ? COLOR_BUY : COLOR_SELL) + '88';
             }
 
             ctx.moveTo(0, y);
@@ -81,10 +98,10 @@ export function init(canvas, config) {
             ctx.stroke();
         });
 
-        // 繪製動態變色的價格線
+        // 繪製價格線
         const priceY = priceToY(price);
         ctx.setLineDash([]);
-        ctx.strokeStyle = isRising ? COLOR_BUY : COLOR_SELL;
+        ctx.strokeStyle = isRising ? COLOR_BUY : COLOR_SELL; // 漲綠跌紅 (配合買綠賣紅邏輯)
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(0, priceY);
