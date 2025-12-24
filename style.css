@@ -16,7 +16,6 @@ body {
     overflow: hidden;
 }
 
-/* 側邊欄與右面板通用 */
 .sidebar, .control-panel {
     width: 240px;
     background: var(--bg-side);
@@ -31,18 +30,14 @@ body {
 }
 
 .brand { padding: 20px; font-weight: bold; color: var(--accent); font-size: 20px; border-bottom: 1px solid var(--border); }
-
 .section-title { padding: 15px 20px 5px; font-size: 11px; color: #848e9c; text-transform: uppercase; }
 
 .main-content { flex: 1; display: flex; flex-direction: column; }
-
 .toolbar { height: 60px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
 
 #canvas-container { flex: 1; margin: 15px; border-radius: 4px; border: 1px solid var(--border); background: #131722; position: relative; }
-
 .info-panel { height: 100px; padding: 15px 20px; background: var(--bg-side); border-top: 1px solid var(--border); }
 
-/* 輸入框樣式 */
 .settings-group { padding: 0 20px; }
 .input-item { margin-bottom: 15px; }
 .input-item label { display: block; font-size: 12px; margin-bottom: 5px; color: #b7bdc6; }
