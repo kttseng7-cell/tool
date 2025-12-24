@@ -3,54 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoViz Pro - 策略視覺化</title>
+    <title>CryptoViz Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
-
     <aside class="sidebar">
         <div class="brand">CRYPTO VIZ</div>
-        <div class="section-title">工具選單</div>
+        <div class="section-title">工具</div>
         <nav id="menu"></nav>
     </aside>
 
     <main class="main-content">
         <header class="toolbar">
             <h2 id="tool-title">請選擇工具</h2>
-            <button id="export-gif" class="btn-export">生成 GIF 動圖</button>
+            <button id="export-gif" class="btn-export">生成 GIF</button>
         </header>
-
         <div id="canvas-container">
             <canvas id="main-canvas"></canvas>
         </div>
-
-        <section class="info-panel">
-            <h3>工具說明</h3>
-            <p id="tool-info">請從左側選擇工具開始演示。</p>
-        </section>
+        <div class="info-panel">
+            <p id="tool-info">等待載入...</p>
+        </div>
     </main>
 
     <aside class="control-panel">
-        <div class="section-title">策略參數設定</div>
+        <div class="section-title">網格參數設定</div>
         <div class="settings-group">
             <div class="input-item">
-                <label>網格上限 (px)</label>
+                <label>網格上限 (Y軸 px)</label>
                 <input type="number" id="grid-top" value="100">
             </div>
             <div class="input-item">
-                <label>網格下限 (px)</label>
+                <label>網格下限 (Y軸 px)</label>
                 <input type="number" id="grid-bottom" value="400">
             </div>
             <div class="input-item">
-                <label>移動速度 (0.01 - 0.1)</label>
+                <label>價格移動速度 (0.01 - 0.2)</label>
                 <input type="number" id="move-speed" value="0.04" step="0.01">
             </div>
             <div class="input-item">
-                <label>錄製秒數 (GIF 長度)</label>
+                <label>GIF 錄製秒數</label>
                 <input type="number" id="record-duration" value="3">
             </div>
-            <button id="apply-settings" class="btn-primary">套用並重新啟動</button>
+            <button id="apply-settings" class="btn-primary">套用設置</button>
         </div>
     </aside>
 
