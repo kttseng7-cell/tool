@@ -11,7 +11,7 @@ function getParams() {
         viewBottom: parseFloat(document.getElementById('view-bottom').value),
         gridTop: parseFloat(document.getElementById('grid-top').value),
         gridBottom: parseFloat(document.getElementById('grid-bottom').value),
-        moveSpeed: parseFloat(document.getElementById('move-speed').value), // 週期秒數
+        moveSpeed: parseFloat(document.getElementById('move-speed').value),
         volatility: parseFloat(document.getElementById('volatility').value),
         priceMax: parseFloat(document.getElementById('price-max').value),
         priceMin: parseFloat(document.getElementById('price-min').value),
@@ -59,4 +59,5 @@ TOOL_CONFIG.forEach(tool => {
     menu.appendChild(btn);
 });
 
-if(TOOL_CONFIG.length > 0) setTimeout(() => menu.firstChild.click(), 500);
+// 自動啟動
+setTimeout(() => { if(menu.firstChild) menu.firstChild.click(); }, 500);
