@@ -1,0 +1,50 @@
+:root {
+    --bg-color: #131722;       /* TradingView 經典底色 */
+    --sidebar-bg: #1e222d;
+    --text-color: #d1d4dc;
+    --accent-color: #2962ff;   /* 專業藍 */
+    --border-color: #363c4e;
+}
+
+body.dark-theme {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#canvas-container {
+    flex: 1;
+    background: #1e222d;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+canvas { width: 100%; height: 100%; }
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
