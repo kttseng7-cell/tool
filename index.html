@@ -5,133 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoViz Pro - 策略視覺化工具</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
-    <style>
-        :root {
-            --bg-deep: #0b0e11;      /* 交易所背景深色 */
-            --bg-card: #1e222d;      /* 面板色 */
-            --text-main: #d1d4dc;    /* 主文字色 */
-            --accent: #2962ff;       /* 專業藍 */
-            --border: #363c4e;       /* 分隔線 */
-            --success: #00c076;
-            --danger: #ff5252;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Inter', -apple-system, sans-serif;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* 側邊欄 */
-        .sidebar {
-            width: 260px;
-            background: var(--bg-card);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand {
-            padding: 24px;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--accent);
-            border-bottom: 1px solid var(--border);
-        }
-
-        #menu {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-        }
-
-        .menu-item {
-            width: 100%;
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-main);
-            padding: 12px;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 8px;
-        }
-
-        .menu-item:hover {
-            background: #2a2e39;
-        }
-
-        .menu-item.active {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* 主內容區 */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .toolbar {
-            height: 60px;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-        }
-
-        #canvas-container {
-            flex: 1;
-            position: relative;
-            background: var(--bg-deep);
-            margin: 20px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        .info-panel {
-            height: 150px;
-            padding: 20px 24px;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-        }
-
-        .btn-export {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-export:disabled {
-            background: #363c4e;
-            cursor: not-allowed;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-theme">
 
     <aside class="sidebar">
         <div class="brand">CRYPTO VIZ</div>
-        <nav id="menu">
-            </nav>
+        <nav id="menu"></nav>
     </aside>
 
     <main class="main-content">
