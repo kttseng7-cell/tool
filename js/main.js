@@ -1,58 +1,53 @@
-// js/main.js
 import { recordCanvas } from './recorder.js';
 
 const TOOL_CONFIG = [
-    { id: 'grid', name: '基礎網格交易', file: 'grid-trading.js' },
+    { id: 'grid', name: '網格交易 (Grid)', file: 'grid-trading.js' },
 ];
 
 let currentModule = null;
-let currentTool = null;
+let activeTool = null;
 const canvas = document.getElementById('main-canvas');
-const exportBtn = document.getElementById('export-gif');
 
-// 取得 UI 參數
 function getParams() {
     return {
         gridTop: parseFloat(document.getElementById('grid-top').value),
         gridBottom: parseFloat(document.getElementById('grid-bottom').value),
         priceMax: parseFloat(document.getElementById('price-max').value),
         priceMin: parseFloat(document.getElementById('price-min').value),
-        duration: parseInt(document.getElementById('record-sec').value)
+        sec: parseInt(document.getElementById('record-sec').value)
     };
 }
 
-async function loadTool(tool) {
+async function startTool(tool) {
     if (currentModule?.destroy) currentModule.destroy();
-    currentTool = tool;
+    activeTool = tool;
 
     try {
-        const module = await import(`./modules/${tool.file}`);
+        const module = await import(`./modules/${tool.file}?v=${Date.now()}`);
         document.getElementById('tool-title').innerText = module.metadata.title;
         document.getElementById('tool-info').innerText = module.metadata.description;
         
-        // 傳入參數初始化
         module.init(canvas, getParams());
         currentModule = module;
-    } catch (err) { console.error(err); }
+    } catch (e) { console.error(e); }
 }
 
-// 監聽套用按鈕
 document.getElementById('apply-settings').onclick = () => {
-    if (currentTool) loadTool(currentTool);
+    if (activeTool) startTool(activeTool);
 };
 
-// 錄製功能使用自定義秒數
-exportBtn.onclick = async () => {
+document.getElementById('export-gif').onclick = async () => {
     if (!currentModule) return;
-    const params = getParams();
-    exportBtn.disabled = true;
-    exportBtn.innerText = `錄製中 (${params.duration}s)...`;
-    await recordCanvas(canvas, params.duration);
-    exportBtn.innerText = "生成 GIF 動圖";
-    exportBtn.disabled = false;
+    const btn = document.getElementById('export-gif');
+    btn.disabled = true;
+    const sec = getParams().sec;
+    btn.innerText = `錄製中 (${sec}s)...`;
+    await recordCanvas(canvas, sec);
+    btn.innerText = "生成 GIF 動圖";
+    btn.disabled = false;
 };
 
-// 初始化選單與預載入
+// 初始化選單
 const menu = document.getElementById('menu');
 TOOL_CONFIG.forEach(tool => {
     const btn = document.createElement('button');
@@ -61,7 +56,7 @@ TOOL_CONFIG.forEach(tool => {
     btn.onclick = () => {
         document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        loadTool(tool);
+        startTool(tool);
     };
     menu.appendChild(btn);
 });
