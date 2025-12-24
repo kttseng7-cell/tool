@@ -1,35 +1,33 @@
-export function recordCanvas(canvas, durationSeconds = 3) {
+export function recordCanvas(canvas, durationSeconds = 5) {
     return new Promise((resolve) => {
         const gif = new GIF({
             workers: 2,
             quality: 10,
             width: canvas.width,
             height: canvas.height,
-            workerScript: './assets/gif.worker.js' // 請確保此路徑正確
+            workerScript: './assets/gif.worker.js'
         });
 
         const fps = 20;
-        const frameDelay = 1000 / fps;
         const totalFrames = durationSeconds * fps;
-        let capturedFrames = 0;
+        let captured = 0;
 
-        const recordInterval = setInterval(() => {
-            gif.addFrame(canvas, { copy: true, delay: frameDelay });
-            capturedFrames++;
-
-            if (capturedFrames >= totalFrames) {
-                clearInterval(recordInterval);
+        const interval = setInterval(() => {
+            gif.addFrame(canvas, { copy: true, delay: 1000 / fps });
+            captured++;
+            if (captured >= totalFrames) {
+                clearInterval(interval);
                 gif.render();
             }
-        }, frameDelay);
+        }, 1000 / fps);
 
         gif.on('finished', (blob) => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `strategy-${Date.now()}.gif`;
+            link.download = `strategy-viz-${Date.now()}.gif`;
             link.click();
-            resolve(url);
+            resolve();
         });
     });
 }
