@@ -1,47 +1,92 @@
 :root {
-    --bg-color: #131722;       /* TradingView 經典底色 */
-    --sidebar-bg: #1e222d;
-    --text-color: #d1d4dc;
-    --accent-color: #2962ff;   /* 專業藍 */
-    --border-color: #363c4e;
+    --bg-deep: #0b0e11;
+    --bg-card: #1e222d;
+    --text-main: #d1d4dc;
+    --accent: #2962ff;
+    --border: #363c4e;
 }
 
-body.dark-theme {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+body {
     margin: 0;
+    padding: 0;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
     font-family: 'Inter', -apple-system, sans-serif;
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 .sidebar {
-    width: 240px;
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    padding: 20px;
+    width: 260px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
 }
 
-.content {
+.brand {
+    padding: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+}
+
+#menu {
+    flex: 1;
+    padding: 16px;
+}
+
+.menu-item {
+    width: 100%;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-main);
+    padding: 12px;
+    text-align: left;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: 0.2s;
+}
+
+.menu-item.active { background: var(--accent); color: white; }
+
+.main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+}
+
+.toolbar {
+    height: 60px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
 }
 
 #canvas-container {
     flex: 1;
-    background: #1e222d;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    position: relative;
-    overflow: hidden;
+    margin: 20px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 
 canvas { width: 100%; height: 100%; }
 
-.btn-primary {
-    background: var(--accent-color);
+.info-panel {
+    height: 120px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+}
+
+.btn-export {
+    background: var(--accent);
     color: white;
     border: none;
     padding: 8px 16px;
