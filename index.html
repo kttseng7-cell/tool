@@ -2,41 +2,17 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>CryptoViz Pro - 策略視覺化工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoViz Pro - 策略視覺化</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
+
     <aside class="sidebar">
         <div class="brand">CRYPTO VIZ</div>
-        
-        <div class="section-title">工具選擇</div>
+        <div class="section-title">工具選單</div>
         <nav id="menu"></nav>
-
-        <div class="section-title">策略設置</div>
-        <div class="settings-panel">
-            <div class="input-group">
-                <label>網格上限 (px)</label>
-                <input type="number" id="grid-top" value="150">
-            </div>
-            <div class="input-group">
-                <label>網格下限 (px)</label>
-                <input type="number" id="grid-bottom" value="450">
-            </div>
-            <div class="input-group">
-                <label>震盪上限 (px)</label>
-                <input type="number" id="price-max" value="100">
-            </div>
-            <div class="input-group">
-                <label>震盪下限 (px)</label>
-                <input type="number" id="price-min" value="500">
-            </div>
-            <div class="input-group">
-                <label>錄製秒數</label>
-                <input type="number" id="record-sec" value="3">
-            </div>
-            <button id="apply-settings" class="btn-primary" style="width: 100%; margin-top: 10px;">套用設置</button>
-        </div>
     </aside>
 
     <main class="main-content">
@@ -44,13 +20,44 @@
             <h2 id="tool-title">請選擇工具</h2>
             <button id="export-gif" class="btn-export">生成 GIF 動圖</button>
         </header>
+
         <div id="canvas-container">
             <canvas id="main-canvas"></canvas>
         </div>
+
         <section class="info-panel">
-            <p id="tool-info">從左側選擇一個策略工具來查看動態演示。</p>
+            <h3>工具說明</h3>
+            <p id="tool-info">請從左側選擇工具開始演示。</p>
         </section>
     </main>
+
+    <aside class="control-panel" id="right-panel">
+        <div class="section-title">策略參數設定</div>
+        <div class="settings-group">
+            <div class="input-item">
+                <label>網格上限 (Y軸)</label>
+                <input type="number" id="grid-top" value="100">
+            </div>
+            <div class="input-item">
+                <label>網格下限 (Y軸)</label>
+                <input type="number" id="grid-bottom" value="400">
+            </div>
+            <div class="input-item">
+                <label>價格最高界線</label>
+                <input type="number" id="price-max" value="50">
+            </div>
+            <div class="input-item">
+                <label>價格最低界線</label>
+                <input type="number" id="price-min" value="450">
+            </div>
+            <div class="input-item">
+                <label>錄製秒數</label>
+                <input type="number" id="record-sec" value="3">
+            </div>
+            <button id="apply-settings" class="btn-primary">套用並重新啟動</button>
+        </div>
+    </aside>
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
