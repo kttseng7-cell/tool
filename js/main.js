@@ -1,15 +1,12 @@
 import { recordCanvas } from './recorder.js';
 
 const TOOL_CONFIG = [
-    { id: 'grid', name: '網格交易 (Grid)', file: 'grid-trading.js' },
+    { id: 'grid', name: '基礎網格交易', file: 'grid-trading.js' },
 ];
 
 let currentModule = null;
 const canvas = document.getElementById('main-canvas');
-const toolTitle = document.getElementById('tool-title');
-const toolInfo = document.getElementById('tool-info');
 
-// 讀取當前面板設定
 function getSettings() {
     return {
         viewTop: parseFloat(document.getElementById('view-top').value),
@@ -22,17 +19,16 @@ function getSettings() {
     };
 }
 
-async function loadTool(toolConfig, element) {
-    document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+async function loadTool(tool, element) {
+    document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
     element.classList.add('active');
 
     if (currentModule?.destroy) currentModule.destroy();
 
-    const module = await import(`./modules/${toolConfig.file}`);
-    toolTitle.innerText = module.metadata.title;
-    toolInfo.innerText = module.metadata.description;
+    const module = await import(`./modules/${tool.file}`);
+    document.getElementById('tool-title').innerText = module.metadata.title;
+    document.getElementById('tool-info').innerText = module.metadata.description;
 
-    // 初始化時將設定傳入
     module.init(canvas, getSettings());
     currentModule = module;
 }
@@ -47,26 +43,19 @@ TOOL_CONFIG.forEach(tool => {
     menu.appendChild(btn);
 });
 
-// 套用按鈕點擊
 document.getElementById('apply-settings').onclick = () => {
-    if (currentModule) {
-        currentModule.init(canvas, getSettings());
-    }
+    if (currentModule) currentModule.init(canvas, getSettings());
 };
 
-// GIF 錄製
 document.getElementById('export-gif').onclick = async () => {
     if (!currentModule) return;
-    const settings = getSettings();
     const btn = document.getElementById('export-gif');
+    const sec = getSettings().recordSec;
     btn.disabled = true;
-    btn.innerText = `錄製中 (${settings.recordSec}s)...`;
-    
-    await recordCanvas(canvas, settings.recordSec);
-    
+    btn.innerText = `錄製中 (${sec}s)...`;
+    await recordCanvas(canvas, sec);
     btn.disabled = false;
     btn.innerText = "生成 GIF 動圖";
 };
 
-// 預設載入第一個
 if (menu.firstChild) menu.firstChild.click();
