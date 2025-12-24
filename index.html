@@ -31,28 +31,24 @@
         </section>
     </main>
 
-    <aside class="control-panel" id="right-panel">
+    <aside class="control-panel">
         <div class="section-title">策略參數設定</div>
         <div class="settings-group">
             <div class="input-item">
-                <label>網格上限 (Y軸)</label>
+                <label>網格上限 (px)</label>
                 <input type="number" id="grid-top" value="100">
             </div>
             <div class="input-item">
-                <label>網格下限 (Y軸)</label>
+                <label>網格下限 (px)</label>
                 <input type="number" id="grid-bottom" value="400">
             </div>
             <div class="input-item">
-                <label>價格最高界線</label>
-                <input type="number" id="price-max" value="50">
+                <label>移動速度 (0.01 - 0.1)</label>
+                <input type="number" id="move-speed" value="0.04" step="0.01">
             </div>
             <div class="input-item">
-                <label>價格最低界線</label>
-                <input type="number" id="price-min" value="450">
-            </div>
-            <div class="input-item">
-                <label>錄製秒數</label>
-                <input type="number" id="record-sec" value="3">
+                <label>錄製秒數 (GIF 長度)</label>
+                <input type="number" id="record-duration" value="3">
             </div>
             <button id="apply-settings" class="btn-primary">套用並重新啟動</button>
         </div>
