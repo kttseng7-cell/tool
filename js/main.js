@@ -12,9 +12,8 @@ function getParams() {
     return {
         gridTop: parseFloat(document.getElementById('grid-top').value),
         gridBottom: parseFloat(document.getElementById('grid-bottom').value),
-        priceMax: parseFloat(document.getElementById('price-max').value),
-        priceMin: parseFloat(document.getElementById('price-min').value),
-        sec: parseInt(document.getElementById('record-sec').value)
+        moveSpeed: parseFloat(document.getElementById('move-speed').value), // 取得移動速度
+        recordDuration: parseInt(document.getElementById('record-duration').value) // 錄製秒數
     };
 }
 
@@ -27,7 +26,7 @@ async function startTool(tool) {
         document.getElementById('tool-title').innerText = module.metadata.title;
         document.getElementById('tool-info').innerText = module.metadata.description;
         
-        module.init(canvas, getParams());
+        module.init(canvas, getParams()); // 傳入參數
         currentModule = module;
     } catch (e) { console.error(e); }
 }
@@ -39,10 +38,10 @@ document.getElementById('apply-settings').onclick = () => {
 document.getElementById('export-gif').onclick = async () => {
     if (!currentModule) return;
     const btn = document.getElementById('export-gif');
+    const { recordDuration } = getParams();
     btn.disabled = true;
-    const sec = getParams().sec;
-    btn.innerText = `錄製中 (${sec}s)...`;
-    await recordCanvas(canvas, sec);
+    btn.innerText = `錄製中 (${recordDuration}s)...`;
+    await recordCanvas(canvas, recordDuration);
     btn.innerText = "生成 GIF 動圖";
     btn.disabled = false;
 };
