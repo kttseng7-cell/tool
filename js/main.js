@@ -1,7 +1,7 @@
 import { recordCanvas } from './recorder.js';
 
 const TOOL_CONFIG = [
-    { id: 'grid', name: '基礎網格交易', file: 'grid-trading.js' },
+    { id: 'grid', name: '網格交易演示', file: 'grid-trading.js' },
 ];
 
 let currentModule = null;
