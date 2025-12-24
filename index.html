@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoViz Pro - 策略視覺化工具</title>
+    <title>CryptoViz Pro - 專業策略視覺化</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +11,7 @@
 
     <aside class="sidebar">
         <div class="brand">CRYPTO VIZ</div>
-        <div class="section-title">策略工具</div>
+        <div class="section-title">工具選單</div>
         <nav id="menu"></nav>
     </aside>
 
@@ -20,37 +20,63 @@
             <h2 id="tool-title">請選擇工具</h2>
             <button id="export-gif" class="btn-export">生成 GIF 動圖</button>
         </header>
-
         <div id="canvas-container">
             <canvas id="main-canvas"></canvas>
         </div>
-
-        <section class="info-panel">
+        <div class="info-panel">
             <h3>工具說明</h3>
-            <p id="tool-info">請從左側選擇一個策略工具來查看動態演示。</p>
-        </section>
+            <p id="tool-info">載入中...</p>
+        </div>
     </main>
 
     <aside class="control-panel">
-        <div class="section-title">策略參數設定</div>
+        <div class="section-title">畫布顯示範圍</div>
         <div class="settings-group">
             <div class="input-item">
-                <label>網格上限 (Y軸像素)</label>
-                <input type="number" id="grid-top" value="100">
+                <label>視窗上限 (Price Top)</label>
+                <input type="number" id="view-top" value="1000">
             </div>
             <div class="input-item">
-                <label>網格下限 (Y軸像素)</label>
-                <input type="number" id="grid-bottom" value="400">
+                <label>視窗下限 (Price Bottom)</label>
+                <input type="number" id="view-bottom" value="0">
+            </div>
+        </div>
+
+        <div class="section-title">網格區間設定</div>
+        <div class="settings-group">
+            <div class="input-item">
+                <label>網格上限</label>
+                <input type="number" id="grid-top" value="800">
             </div>
             <div class="input-item">
-                <label>移動速度 (0.01 - 0.2)</label>
-                <input type="number" id="move-speed" value="0.04" step="0.01">
+                <label>網格下限</label>
+                <input type="number" id="grid-bottom" value="200">
+            </div>
+        </div>
+
+        <div class="section-title">價格與波動</div>
+        <div class="settings-group">
+            <div class="input-item">
+                <label>移動速度 (秒/周期, 0.2-30)</label>
+                <input type="number" id="move-speed" value="5" step="0.1">
+            </div>
+            <div class="input-item">
+                <label>波動強度 (Volatility)</label>
+                <input type="number" id="volatility" value="5" step="1">
+            </div>
+            <div class="input-item">
+                <label>價格最高界線</label>
+                <input type="number" id="price-max" value="900">
+            </div>
+            <div class="input-item">
+                <label>價格最低界線</label>
+                <input type="number" id="price-min" value="100">
             </div>
             <div class="input-item">
                 <label>GIF 錄製秒數</label>
                 <input type="number" id="record-sec" value="3">
             </div>
-            <button id="apply-settings" class="btn-primary">套用設置並重啟</button>
+            <button id="apply-settings" class="btn-primary">套用並重新載入</button>
         </div>
     </aside>
 
