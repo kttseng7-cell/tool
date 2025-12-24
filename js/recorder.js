@@ -5,7 +5,7 @@ export function recordCanvas(canvas, durationSeconds = 3) {
             quality: 10,
             width: canvas.width,
             height: canvas.height,
-            workerScript: './assets/gif.worker.js'
+            workerScript: './assets/gif.worker.js' // 請確保此路徑正確
         });
 
         const fps = 20;
