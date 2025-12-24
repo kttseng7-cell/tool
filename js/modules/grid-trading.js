@@ -1,110 +1,86 @@
-/**
- * js/modules/grid-trading.js
- * 核心功能：動態演示網格交易
- */
-
+// js/modules/grid-trading.js
 export const metadata = {
     title: "網格交易策略 - 動態演示",
-    description: "價格在區間內波動時，觸碰到綠線執行買入，觸碰到紅線執行賣出。此圖演示了『等差網格』的運作方式。"
+    description: "綠線為買單，紅線為賣單。成交後該格會自動翻轉類型，實現高拋低吸。"
 };
 
 let animationId;
-let price = 0;
+let price;
 let counter = 0;
 let grids = [];
 
-export function init(canvas) {
+export function init(canvas, params) {
     const ctx = canvas.getContext('2d');
-    
-    // 設置畫布尺寸並初始化網格
-    const resize = () => {
-        canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = canvas.parentElement.clientHeight;
-        setupGrids(canvas);
-    };
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
 
-    function setupGrids(cvs) {
+    // 初始化網格 (依據輸入的上下限)
+    const setupGrids = () => {
         grids = [];
-        // 使用畫布高度的 20% 到 80% 作為交易區間，確保動畫在視覺中心
-        const top = cvs.height * 0.2;
-        const bottom = cvs.height * 0.8;
-        const gridCount = 8;
-        const spacing = (bottom - top) / gridCount;
-
-        for (let i = 0; i <= gridCount; i++) {
-            const y = top + i * spacing;
+        const count = 6;
+        const spacing = (params.gridBottom - params.gridTop) / count;
+        for (let i = 0; i <= count; i++) {
+            const y = params.gridTop + i * spacing;
             grids.push({
                 y: y,
-                type: y < (top + bottom) / 2 ? 'sell' : 'buy', // 上半部賣，下半部買
+                // 價格下方的線為買單(buy)，上方為賣單(sell)
+                type: y > canvas.height / 2 ? 'buy' : 'sell',
                 lastTriggered: 0
             });
         }
-        price = (top + bottom) / 2; // 初始價格置中
-    }
+        price = (params.priceMax + params.priceMin) / 2;
+    };
 
-    window.addEventListener('resize', resize);
-    resize();
+    setupGrids();
 
     function draw() {
-        // 1. 背景清空 (TradingView 深色底)
         ctx.fillStyle = '#131722';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. 更新價格 (模擬價格波動)
-        counter += 0.02;
-        price += Math.sin(counter) * 2 + (Math.random() - 0.5) * 4;
+        // 價格震盪邏輯 (限制在 priceMax ~ priceMin 之間)
+        counter += 0.03;
+        let nextPrice = price + Math.sin(counter) * 4 + (Math.random() - 0.5) * 6;
+        
+        // 碰壁反彈或限制
+        if (nextPrice < params.priceMax || nextPrice > params.priceMin) {
+            counter += Math.PI; // 反向
+        } else {
+            price = nextPrice;
+        }
 
-        // 3. 繪製網格線
         grids.forEach(grid => {
-            // 成交碰撞偵測
-            if (Math.abs(price - grid.y) < 3) {
-                grid.lastTriggered = 15; // 觸發時發光動畫持續 15 幀
+            // 碰撞偵測：當價格經過網格線
+            if (Math.abs(price - grid.y) < 3 && grid.lastTriggered === 0) {
+                // 翻轉邏輯：成交後買單變賣單，賣單變買單
+                grid.type = (grid.type === 'buy') ? 'sell' : 'buy';
+                grid.lastTriggered = 20; // 防止連續觸發
             }
 
+            // 繪製格線
             ctx.beginPath();
-            if (grid.lastTriggered > 0) {
-                // 觸發時：實線且變亮
-                ctx.setLineDash([]);
-                ctx.strokeStyle = grid.type === 'sell' ? '#ff5252' : '#00c076';
-                ctx.lineWidth = 2;
-                grid.lastTriggered--;
-            } else {
-                // 平時：虛線且半透明
-                ctx.setLineDash([5, 5]);
-                ctx.strokeStyle = grid.type === 'sell' ? 'rgba(255, 82, 82, 0.3)' : 'rgba(0, 192, 118, 0.3)';
-                ctx.lineWidth = 1;
-            }
-            
+            ctx.setLineDash(grid.lastTriggered > 0 ? [] : [5, 5]);
+            ctx.strokeStyle = grid.type === 'buy' ? '#00c076' : '#ff5252';
+            ctx.globalAlpha = grid.lastTriggered > 0 ? 1 : 0.4;
+            ctx.lineWidth = grid.lastTriggered > 0 ? 3 : 1;
             ctx.moveTo(0, grid.y);
             ctx.lineTo(canvas.width, grid.y);
             ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            if (grid.lastTriggered > 0) grid.lastTriggered--;
         });
 
-        // 4. 繪製當前價格線
+        // 價格線
         ctx.setLineDash([]);
-        ctx.beginPath();
         ctx.strokeStyle = '#2962ff';
         ctx.lineWidth = 2;
-        ctx.moveTo(0, price);
-        ctx.lineTo(canvas.width, price);
-        ctx.stroke();
-
-        // 5. 繪製價格標籤 (右側標記)
-        ctx.fillStyle = '#2962ff';
-        const labelWidth = 80;
-        ctx.fillRect(canvas.width - labelWidth, price - 12, labelWidth, 24);
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 12px Arial';
-        ctx.fillText(`BTC ${price.toFixed(2)}`, canvas.width - labelWidth + 5, price + 5);
+        ctx.strokeRect(0, price, canvas.width, 1);
 
         animationId = requestAnimationFrame(draw);
     }
-
     draw();
 }
 
 export function destroy() {
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-    }
+    if (animationId) cancelAnimationFrame(animationId);
 }
