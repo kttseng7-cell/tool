@@ -17,7 +17,7 @@
 
     <main class="main-content">
         <header class="toolbar">
-            <h2 id="tool-title">請選擇工具</h2>
+            <h2 id="tool-title">載入中...</h2>
             <button id="export-gif" class="btn-export">生成 GIF 動圖</button>
         </header>
         <div id="canvas-container">
@@ -25,7 +25,7 @@
         </div>
         <div class="info-panel">
             <h3>工具說明</h3>
-            <p id="tool-info">載入中...</p>
+            <p id="tool-info">請從左側選擇工具開始演示。</p>
         </div>
     </main>
 
@@ -34,11 +34,11 @@
         <div class="settings-group">
             <div class="input-item">
                 <label>視窗上限 (Price Top)</label>
-                <input type="number" id="view-top" value="1000">
+                <input type="number" id="view-top" value="180000">
             </div>
             <div class="input-item">
                 <label>視窗下限 (Price Bottom)</label>
-                <input type="number" id="view-bottom" value="0">
+                <input type="number" id="view-bottom" value="20000">
             </div>
         </div>
 
@@ -46,11 +46,11 @@
         <div class="settings-group">
             <div class="input-item">
                 <label>網格上限</label>
-                <input type="number" id="grid-top" value="800">
+                <input type="number" id="grid-top" value="150000">
             </div>
             <div class="input-item">
                 <label>網格下限</label>
-                <input type="number" id="grid-bottom" value="200">
+                <input type="number" id="grid-bottom" value="80000">
             </div>
         </div>
 
@@ -58,23 +58,23 @@
         <div class="settings-group">
             <div class="input-item">
                 <label>移動速度 (秒/周期, 0.2-30)</label>
-                <input type="number" id="move-speed" value="5" step="0.1">
+                <input type="number" id="move-speed" value="30" step="0.1">
             </div>
             <div class="input-item">
                 <label>波動強度 (Volatility)</label>
-                <input type="number" id="volatility" value="5" step="1">
+                <input type="number" id="volatility" value="1" step="1">
             </div>
             <div class="input-item">
                 <label>價格最高界線</label>
-                <input type="number" id="price-max" value="900">
+                <input type="number" id="price-max" value="120000">
             </div>
             <div class="input-item">
                 <label>價格最低界線</label>
-                <input type="number" id="price-min" value="100">
+                <input type="number" id="price-min" value="70000">
             </div>
             <div class="input-item">
                 <label>GIF 錄製秒數</label>
-                <input type="number" id="record-sec" value="3">
+                <input type="number" id="record-sec" value="10">
             </div>
             <button id="apply-settings" class="btn-primary">套用並重新載入</button>
         </div>
