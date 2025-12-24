@@ -1,5 +1,5 @@
 export function recordCanvas(canvas, durationSeconds = 3) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const gif = new GIF({
             workers: 2,
             quality: 10,
