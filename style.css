@@ -1,39 +1,55 @@
-/* style.css 新增部分 */
-.section-title {
-    padding: 15px 20px 5px;
-    font-size: 12px;
-    color: #848e9c;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+:root {
+    --bg-deep: #0b0e11;
+    --bg-side: #1e222d;
+    --accent: #2962ff;
+    --border: #363c4e;
+    --text: #d1d4dc;
 }
 
-.settings-panel {
-    padding: 10px 20px;
-    border-top: 1px solid var(--border);
+body {
+    margin: 0; padding: 0;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.input-group {
-    margin-bottom: 12px;
+/* 側邊欄與右面板通用 */
+.sidebar, .control-panel {
+    width: 240px;
+    background: var(--bg-side);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
 }
 
-.input-group label {
-    display: block;
-    font-size: 12px;
-    margin-bottom: 5px;
-    color: #b7bdc6;
+.control-panel {
+    border-right: none;
+    border-left: 1px solid var(--border);
 }
 
-.input-group input {
-    width: 100%;
-    background: #2b2f3a;
-    border: 1px solid #474d57;
-    border-radius: 4px;
-    color: white;
-    padding: 6px;
-    box-sizing: border-box;
-}
+.brand { padding: 20px; font-weight: bold; color: var(--accent); font-size: 20px; border-bottom: 1px solid var(--border); }
 
-.input-group input:focus {
-    border-color: var(--accent);
-    outline: none;
-}
+.section-title { padding: 15px 20px 5px; font-size: 11px; color: #848e9c; text-transform: uppercase; }
+
+.main-content { flex: 1; display: flex; flex-direction: column; }
+
+.toolbar { height: 60px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+
+#canvas-container { flex: 1; margin: 15px; border-radius: 4px; border: 1px solid var(--border); background: #131722; position: relative; }
+
+.info-panel { height: 100px; padding: 15px 20px; background: var(--bg-side); border-top: 1px solid var(--border); }
+
+/* 輸入框樣式 */
+.settings-group { padding: 0 20px; }
+.input-item { margin-bottom: 15px; }
+.input-item label { display: block; font-size: 12px; margin-bottom: 5px; color: #b7bdc6; }
+.input-item input { width: 100%; background: #2b2f3a; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 4px; box-sizing: border-box; }
+
+.btn-primary, .btn-export { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+.btn-export { width: auto; padding: 8px 16px; }
+
+.menu-item { background: transparent; border: none; color: var(--text); padding: 12px 20px; text-align: left; cursor: pointer; width: 100%; }
+.menu-item.active { background: #2a2e39; color: var(--accent); border-left: 3px solid var(--accent); }
